@@ -1,0 +1,162 @@
+/* Estilos para a lista de mesas */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centralizar verticalmente */
+    gap: 20px; /* Espaço entre a lista e os botões */
+    margin: 0;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+.table-list {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    background-color: #fff;
+}
+
+.table-list-item {
+    font-size: 18px;
+    margin: 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.mesa-paga {
+    color: #e74c3c;
+}
+
+.mesa-reservada {
+    color: yellowgreen;
+}
+
+.mesa-nao-vendida {
+    color: #3498db;
+}
+
+.table-list-item:hover {
+    background-color: #dcdcdc;
+}
+
+/* Estilos para os botões Gerar PDF e Ir */
+.buttons-container {
+    display: flex;
+    justify-content: center; /* Centralizar horizontalmente */
+    align-items: center; /* Centralizar verticalmente */
+    background-color: #007bff;
+    padding: 10px 20px; /* Espaçamento interno horizontal */
+    z-index: 1000; /* Para garantir que esteja acima do conteúdo */
+}
+
+.button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.button-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.button-primary:hover {
+    background-color: #0056b3;
+}
+
+#redirectToReservasButton {
+    padding: 10px 20px;
+    background-color: #3498db; /* Cor azul para o botão Ir */
+    color: #fff;
+    text-decoration: none; /* Remover sublinhado */
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#redirectToReservasButton:hover {
+    background-color: #0077b6; /* Cor mais escura no hover */
+}
+/* Estilização do menu de navegação */
+
+
+.menu-bar {
+    background-color: #333;
+    overflow: hidden;
+    width: 100%; /* Adicione esta linha */
+}
+
+
+.menu-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-list li {
+    float: left;
+}
+
+.menu-list li a, .logout-button {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.menu-list li a:hover, .logout-button:hover {
+    background-color: #555;
+}
+
+.logout-button {
+    border: none;
+    background: none;
+}
+
+/* Responsividade para dispositivos móveis, caso necessário */
+@media screen and (max-width: 600px) {
+    .menu-list li {
+        float: none;
+    }
+}
+.dark-mode {
+    background-color: #333; /* Exemplo de cor de fundo para o modo escuro */
+    color: #fff; /* Exemplo de cor de texto para o modo escuro */
+    /* Adicione estilos específicos para outros elementos conforme necessário */
+}
+.dark-mode .menu-bar {
+    background-color: #222; /* Exemplo */
+}
+.dark-mode-toggle:hover {
+    background-color: #333;
+}
+.dark-mode .menu {
+    background-color: #333; /* Exemplo de cor de fundo para o menu no modo escuro */
+    /* Outros estilos para o menu no modo escuro */
+}
+
+.dark-mode .menu-buttons button {
+    background-color: #444; /* Exemplo de cor de fundo para botões */
+    color: #fff; /* Exemplo de cor de texto para botões */
+    /* Outros estilos para botões no modo escuro */
+}
+
+.dark-mode .container .column {
+    background-color: #282c35; /* Exemplo de cor de fundo para colunas */
+    color: #fff; /* Exemplo de cor de texto para colunas */
+    /* Outros estilos para colunas no modo escuro */
+}
+
+.dark-mode .table-list {
+    background-color: #1a1a1a; /* Exemplo de cor de fundo para listas */
+    color: #ccc; /* Exemplo de cor de texto para listas */
+    /* Outros estilos para listas no modo escuro */
+}
