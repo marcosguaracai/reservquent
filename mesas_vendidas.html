@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesas Vendidas</title>
+    <link rel="stylesheet" href="../css/mesasvendidas.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.1/purify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+
+<body>
+    
+    <nav class="menu-bar">
+        <!-- Itens do menu -->
+        <ul class="menu-list" id="menu-list">
+           
+            <!-- <li><a href="praca_alimentacao.html">Praça de Alimentação</a></li> -->
+            <li><a href="reservas.html">Reservas</a></li>
+            <!-- <li><a href="bar.html">Bar</a></li> -->
+            <li><a href="#">Modo Escuro</a></li>
+            <li><button id="logout-button" class="logout-button">Sair</button></li>
+        </ul>
+    </nav>
+
+    <h1>Mesas vendidas ou Reservadas</h1>
+    
+    <!-- Botão para redirecionar para a página reservas.html -->
+    <div class="menu">
+        <div class="menu-buttons">
+            <button id="generatePDFButton" class="button button-primary">Gerar PDF</button>
+        </div>
+    </div>
+    
+    
+    <div class="container">
+        <div class="column">
+            <ul class="table-list" id="column1"></ul>
+        </div>
+        <div class="column">
+            <ul class="table-list" id="column2"></ul>
+        </div>
+        <div class="column">
+            <ul class="table-list" id="column3"></ul>
+        </div>
+        <div class="column">
+            <ul class="table-list" id="column4"></ul>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+    function gerarPDF() {
+    const jsPDF = window.jspdf.jsPDF;
+    const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+    });
+
+    doc.setFont('times', 'normal');
+    doc.setFontSize(14);
+
+    // Recuperar os elementos HTML das colunas
+    const column1 = document.getElementById('column1').querySelectorAll('.table-list-item');
+    const column2 = document.getElementById('column2').querySelectorAll('.table-list-item');
+    const column3 = document.getElementById('column3').querySelectorAll('.table-list-item');
+    const column4 = document.getElementById('column4').querySelectorAll('.table-list-item');
+
+    const colunaWidth = 65;
+    let linhaAtual = 20;
+    let colunaAtual = 20;
+
+    // Função para adicionar mesas ao PDF
+    function adicionarMesas(mesas) {
+        for (let i = 0; i < mesas.length; i++) {
+            const mesaInfo = mesas[i].textContent;
+            doc.text(mesaInfo, colunaAtual, linhaAtual);
+
+            colunaAtual += colunaWidth;
+
+            if (colunaAtual > 180) {
+                colunaAtual = 20;
+                linhaAtual += 10;
+
+                // Verificar se chegou ao final da página
+                if (linhaAtual > 277) {
+                    // Adicionar uma nova página
+                    doc.addPage();
+                    linhaAtual = 20;
+                }
+            }
+        }
+    }
+
+    // Adicionar mesas de cada coluna à primeira página
+    adicionarMesas(column1);
+    adicionarMesas(column2);
+    adicionarMesas(column3);
+    adicionarMesas(column4);
+
+    // Adicionar quebra de página
+    doc.addPage();
+
+    // Adicionar mesas das colunas 3 e 4 à segunda página
+    
+
+    doc.save('mesas_vendidas.pdf');
+}
+
+
+
+document.getElementById('generatePDFButton').addEventListener('click', gerarPDF);
+</script>
+    
+    
+ 
+ 
+ 
+ 
+     
+ 
+
+    <script src="../js/mesasvendidas.js"></script>
+    <script src="../js/firebase-config.js"></script>
+</body>
+</html>

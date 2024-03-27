@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praça de Alimentação</title>
+    <link rel="stylesheet" href="../css/praca_alimentacao.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+    <!-- Adicione os scripts do Firebase e jsPDF -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.1/purify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+
+</head>
+<body>
+    <h1>Gerenciamento de Produtos na Praça de Alimentação</h1>
+    <nav class="menu-praca-alimentacao">
+       
+
+<button id="btnGerarPDFPraca" class="botao-gerar-pdf" onclick="gerarPDF()">Gerar PDF</button>
+<script>
+    function gerarPDF() {
+        // Criar uma instância do jsPDF
+        const jsPDF = window.jspdf.jsPDF; // Defina o escopo de jsPDF
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4',
+        });
+
+        doc.setFont('times', 'normal');
+        doc.setFontSize(14); // Tamanho da fonte 12
+
+        // Definir o cabeçalho da tabela
+        const cabecalho = [];
+        const tabelaCabecalho = document.querySelectorAll('#tabelaProdutosPracaAlimentacao th');
+        tabelaCabecalho.forEach((th) => {
+            cabecalho.push(th.textContent);
+        });
+
+        let linhaAtual = 10; // Iniciar na primeira linha dos dados
+
+      
+        const linhasDados = document.querySelectorAll('#tabelaProdutosPracaAlimentacao tbody tr');
+        linhasDados.forEach((linha) => {
+            let colunaAtual = 10; // Iniciar na primeira coluna
+
+            // Iterar pelas colunas de dados e adicionar ao PDF
+            const colunas = linha.querySelectorAll('td');
+            colunas.forEach((coluna) => {
+                doc.text(coluna.textContent, colunaAtual, linhaAtual);
+                colunaAtual += 50; // Avançar para a próxima coluna
+            });
+
+            linhaAtual += 10; // Avançar para a próxima linha
+        });
+
+        // Salvar o PDF
+        doc.save('produtos_praca_alimentacao.pdf');
+    }
+
+    document.getElementById('btnGerarPDFPraca').addEventListener('click', gerarPDF);
+</script>
+
+<!-- Formulário para adicionar produtos -->
+<div id="modalProdutoPraca" class="modal">
+    <div class="modal-conteudo">
+        <span class="fechar">&times;</span>
+        <form id="formProdutoPraca">
+            <input type="text" id="idProdutoPraca" placeholder="ID do Produto" required>
+            <input type="text" id="nomeProdutoPraca" placeholder="Nome do Produto" required>
+            <input type="number" id="quantidadeProdutoPraca" placeholder="Quantidade" required>
+            <select id="tipoQuantidadePraca">
+                <option value="duzia">Dúzias</option>
+                <option value="unidade">Unidades</option>
+            </select>
+            <input type="number" id="valorPagoPraca" placeholder="Valor Pago" required>
+            <input type="number" id="valorVendaPraca" placeholder="Valor de Venda" required>
+            <button type="submit">Adicionar Produto</button>
+        </form>
+    </div>
+</div>
+
+
+
+<!-- Modal de Confirmação de Exclusão -->
+<div id="modalConfirmacaoExclusao" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Por favor, insira sua senha para confirmar a exclusão:</p>
+        <input type="password" id="senhaConfirmacao" placeholder="Senha">
+        <button id="confirmarExclusao">Confirmar</button>
+        <button id="cancelarExclusao">Cancelar</button>
+    </div>
+</div>
+
+
+
+<!-- Tabela para exibir os produtos -->
+<table id="tabelaProdutosPracaAlimentacao">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome do Produto</th>
+            <th>Quantidade</th>
+            <th>Valor Pago</th>
+            <th>Valor de Venda</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Os itens da tabela serão adicionados aqui via JavaScript -->
+    </tbody>
+</table>
+
+
+    <script src="../js/praca_alimentacao.js"></script>
+</body>
+</html>

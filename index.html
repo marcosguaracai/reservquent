@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/indcad.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <!-- Input para email -->
+            <div class="input-container">
+                <input type="email" id="email" name="email" placeholder="Email" required autocomplete="email">
+            </div>
+            <!-- Input para senha -->
+            <div class="input-container">
+                <input type="password" id="senha" name="senha" placeholder="Senha" required autocomplete="current-password">
+                <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+            </div>
+            <!-- Botão de login -->
+            <button type="button" onclick="fazerLogin()">Login</button>
+        </form>
+        <p>Ainda não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+    </div>
+    
+    
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyA91NQ3PIkgY_Ihj1dAgEzQLKTFnQmuZVI",
+          authDomain: "reservquent.firebaseapp.com",
+          databaseURL: "https://reservquent-default-rtdb.firebaseio.com",
+          projectId: "reservquent",
+          storageBucket: "reservquent.appspot.com",
+          messagingSenderId: "135119553812",
+          appId: "1:135119553812:web:7cab36e09b044587382e01"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+    </script>
+
+<script>
+    // Função para fazer login
+    function fazerLogin() {
+        var email = document.getElementById("email").value;
+        var senha = document.getElementById("senha").value;
+
+        firebase.auth().signInWithEmailAndPassword(email, senha)
+            .then(function(userCredential) {
+                // Login bem-sucedido, redirecione o usuário para a página reservas.html
+                window.location.href = "reservas.html";
+
+                document.getElementById("email").value = "";
+                document.getElementById("senha").value = "";
+            })
+            .catch(function(error) {
+                // Lidar com erros de login aqui
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                alert("Erro ao fazer login: " + errorMessage);
+            });
+    }
+
+    function togglePasswordVisibility() {
+    const senhaInput = document.getElementById("senha");
+    const toggleIcon = document.querySelector(".toggle-password");
+
+    if (senhaInput.type === "password") {
+        senhaInput.type = "text";
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    } else {
+        senhaInput.type = "password";
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    }
+}
+
+</script>
+
+
+
+    <script src="../js/firebase-config.js"></script>
+</body>
+</html>

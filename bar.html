@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bar.css">
+
+    <!-- Adicione os scripts do Firebase e jsPDF -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.1/purify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+
+</head>
+<body>
+    <h1>Gerenciamento de Produtos</h1>
+    <nav class="menu-bar">
+        <!-- Itens do menu -->
+        <!-- <ul class="menu-list" id="menu-list">
+            <li><a href="mesas_vendidas.html">Mesas Vendidas</a></li>
+            <li><a href="praca_alimentacao.html">Praça de Alimentação</a></li>
+            <li><a href="reservas.html">Reservas</a></li>
+            <li><a href="#">Modo Escuro</a></li>
+            <li><button id="logout-button" class="logout-button">Sair</button></li>
+        </ul>
+    </nav>
+
+    <button id="btnAbrirModal">Adicionar Novo Produto</button> -->
+    <!-- Adicione o campo de senha dentro de um formulário -->
+
+    <button id="btnGerarPDF" class="botao-gerar-pdf" onclick="gerarPDF()">Gerar PDF</button>
+    <script>
+       
+       function gerarPDF() {
+    // Criar uma instância do jsPDF
+    const jsPDF = window.jspdf.jsPDF; // Defina o escopo de jsPDF
+    const doc = new jsPDF({
+        orientation: 'landscape', 
+        unit: 'mm',
+        format: 'a4',
+    });
+
+    doc.setFont('times', 'normal');
+    doc.setFontSize(12); // Tamanho da fonte 12
+
+    // Definir o cabeçalho da tabela
+    const cabecalho = [];
+    const tabelaCabecalho = document.querySelectorAll('#tabelaProdutos th');
+    tabelaCabecalho.forEach((th) => {
+        cabecalho.push(th.textContent);
+    });
+
+    let linhaAtual = 10; // Iniciar na primeira linha dos dados
+
+    // Iterar pelas linhas de dados da tabela e adicionar ao PDF
+    const linhasDados = document.querySelectorAll('#tabelaProdutos tbody tr');
+    linhasDados.forEach((linha) => {
+        let colunaAtual = 10; // Iniciar na primeira coluna
+
+        // Iterar pelas colunas de dados e adicionar ao PDF
+        const colunas = linha.querySelectorAll('td');
+        colunas.forEach((coluna) => {
+            doc.text(coluna.textContent, colunaAtual, linhaAtual);
+            colunaAtual += 50; // Avançar para a próxima coluna
+        });
+
+        linhaAtual += 10; // Avançar para a próxima linha
+    });
+
+    // Salvar o PDF
+    doc.save('produtos.pdf');
+}
+
+document.getElementById('btnGerarPDF').addEventListener('click', gerarPDF);
+
+
+
+
+    </script>
+
+    <!-- Formulário para adicionar produtos -->
+    <div id="modalProduto" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar">&times;</span>
+            <form id="formProduto">
+                <input type="text" id="idProduto" placeholder="ID do Produto" required>
+                <input type="text" id="nomeProduto" placeholder="Nome do Produto" required>
+                <input type="number" id="quantidadeProduto" placeholder="Quantidade" required>
+                <select id="tipoQuantidade">
+                    <option value="duzia">Dúzia</option>
+                    <option value="unidade">Unidade</option>
+                </select>
+                <input type="number" id="valorPago" placeholder="Valor Pago" required>
+                <input type="number" id="valorVenda" placeholder="Valor de Venda" required>
+                <button type="submit">Adicionar Produto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para confirmar a exclusão -->
+    <div id="modalExcluir" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" id="fecharModalExcluir">&times;</span>
+            <h2>Confirme a exclusão do produto</h2>
+            <form>
+                <input type="text" id="username" style="display: none;" aria-hidden="true" autocomplete="username">
+                <input type="password" id="senhaExclusao" placeholder="Senha de Confirmação" required autocomplete="new-password">
+                <button id="confirmarExclusao">Confirmar Exclusão</button>
+            </form>
+            
+        </div>
+    </div>
+
+    <!-- Tabela para exibir os produtos -->
+    <table id="tabelaProdutos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Valor Pago</th>
+                <th>Valor de Venda</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os itens da tabela serão adicionados aqui via JavaScript -->
+        </tbody>
+    </table>
+
+    <script src="../js/bar.js"></script>
+</body>
+</html>
